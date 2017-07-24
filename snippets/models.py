@@ -29,7 +29,7 @@ class Snippet(TimeStampedMixin):
     def save(self, *args, **kwargs):
         """
         Business Logic: use `pygments` to highlight code.
-        (called on created and update)
+        (called on create and update)
         """
         lexer = get_lexer_by_name(self.language)
         options = self.title and {'title': self.title} or {}
