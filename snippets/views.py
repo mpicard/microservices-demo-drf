@@ -1,24 +1,30 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.renderers import StaticHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
+from django.contrib.auth.models import User
 
-from snippets.serializers import SnippetSerializer, SnippetListSerializer
+from snippets.serializers import SnippetSerializer, UserSerializer
 from snippets.models import Snippet
 
 
 class SnippetViewSet(ModelViewSet):
+    """
+    Manage short snippets of code of a given language and style with syntax
+    highlighting using pygments.
+    """
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
-    list_serializer_class = SnippetListSerializer
 
     @detail_route(renderer_classes=[StaticHTMLRenderer])
     def highlight(self, request, *args, **kwargs):
+        # /snippet/{id}/highlight
         snippet = self.get_object()
         return Response(snippet.highlighted)
 
     @list_route()
     def recent(self, request):
+        # /snippet/recent
         recent = Snippet.objects.all().order_by('-updated')
 
         page = self.paginate_queryset(recent)
@@ -28,3 +34,11 @@ class SnippetViewSet(ModelViewSet):
 
         serializer = self.get_serializer(recent, many=True)
         return Response(serializer.data)
+
+
+class UserViewSet(ReadOnlyModelViewSet):
+    """
+    Manage User and related snippets.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

@@ -2,6 +2,7 @@ from pygments.styles import get_all_styles
 
 
 LANGUAGE_CHOICES = [
+    ('javascript', 'JavaScript'),
     ('python', 'Python'),
     ('python3', 'Python 3'),
     ('rb', 'Ruby'),

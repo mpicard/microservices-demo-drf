@@ -7,7 +7,7 @@ from pygments import highlight
 from . import LANGUAGE_CHOICES, STYLE_CHOICES
 
 
-class TimeStampedMixin(models.Model):
+class TimestampMixin(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -15,16 +15,23 @@ class TimeStampedMixin(models.Model):
         abstract = True
 
 
-class Snippet(TimeStampedMixin):
+class Snippet(TimestampMixin):
     title = models.CharField(max_length=100, blank=True, default='')
     code = models.TextField()
     linenos = models.BooleanField(default=False)
     language = models.CharField(choices=LANGUAGE_CHOICES, default='python3', max_length=100)
     style = models.CharField(choices=STYLE_CHOICES, default='monokai', max_length=100)
     highlighted = models.TextField()
+    owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('created',)
+        # db_table = 'some_other_table_name'
+        # indexes = [models.Index(fields=['title'])]
+        # unique_together = ('title', 'owner',)
+
+    def __str__(self):
+        return self.title
 
     def save(self, *args, **kwargs):
         """
@@ -39,3 +46,14 @@ class Snippet(TimeStampedMixin):
                                   **options)
         self.highlighted = highlight(self.code, lexer, formatter)
         return super().save(*args, **kwargs)
+
+    def delete(self):
+        pass
+
+    def create(self):
+        pass
+
+    def update(self):
+        pass
+
+    # and so on
