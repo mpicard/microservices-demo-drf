@@ -1,19 +1,9 @@
 # Django REST Framework Demo
 
-## Install
+## Run
 
-1. Install Python v3.4+
-
-2. clone repo
-
-3. create and activate virtual environment (recommended)
-
-3. `pip install -r requirements.txt`
-
-## Develop
-
-`python manage.py runserver`
+`docker-compose up`
 
 ## Test
 
-`python manage.py test`
+`docker-compose pytest`
