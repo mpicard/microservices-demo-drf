@@ -7,15 +7,9 @@ from pygments import highlight
 from . import LANGUAGE_CHOICES, STYLE_CHOICES
 
 
-class TimestampMixin(models.Model):
+class Snippet(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class Snippet(TimestampMixin):
     title = models.CharField(max_length=100, blank=True, default='')
     code = models.TextField()
     linenos = models.BooleanField(default=False)

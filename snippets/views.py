@@ -35,6 +35,9 @@ class SnippetViewSet(ModelViewSet):
         serializer = self.get_serializer(recent, many=True)
         return Response(serializer.data)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class UserViewSet(ReadOnlyModelViewSet):
     """

@@ -14,6 +14,7 @@ def validate_something(value):
 
 
 class SnippetSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.id')
     code = serializers.CharField(validators=[validate_something])
     highlight = serializers.HyperlinkedIdentityField(
         view_name='snippet-highlight',
@@ -22,8 +23,7 @@ class SnippetSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Snippet
-        fields = ('url', 'created', 'updated', 'title', 'code',
-                  'linenos', 'language', 'style', 'highlight')
+        exclude = ('highlighted',)
         read_only_fields = ('created', 'updated')
 
     def validate_title(self, title):
