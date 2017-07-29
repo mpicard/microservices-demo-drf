@@ -1,5 +1,5 @@
 """
-Django REST Framework Demo
+Django REST Framework Demo Settings
 """
 
 import os
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
 
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 3
+    'PAGE_SIZE': 3,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 

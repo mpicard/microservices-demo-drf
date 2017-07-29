@@ -5,8 +5,5 @@ language: python3
 services:
   - docker
 
-env:
-  - DOCKER_COMPOSE_VERSION=1.15.0
-
 script:
   docker-compose run web pytest -vvvv

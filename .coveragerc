@@ -1,0 +1,7 @@
+[run]
+source = snippets
+branch = True
+omit = tests/*
+
+[html]
+directory = coverage_html

@@ -28,12 +28,10 @@ class SnippetViewSet(ModelViewSet):
         recent = Snippet.objects.all().order_by('-updated')
 
         page = self.paginate_queryset(recent)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(page, many=True)
 
-        serializer = self.get_serializer(recent, many=True)
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
+
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

@@ -13,10 +13,19 @@ class Snippet(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     code = models.TextField()
     linenos = models.BooleanField(default=False)
-    language = models.CharField(choices=LANGUAGE_CHOICES, default='python3', max_length=100)
-    style = models.CharField(choices=STYLE_CHOICES, default='monokai', max_length=100)
+    language = models.CharField(
+        choices=LANGUAGE_CHOICES,
+        default='python3',
+        max_length=100)
+    style = models.CharField(
+        choices=STYLE_CHOICES,
+        default='monokai',
+        max_length=100)
+    owner = models.ForeignKey(
+        'auth.User',
+        related_name='snippets',
+        on_delete=models.CASCADE)
     highlighted = models.TextField()
-    owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ('created',)
@@ -41,13 +50,13 @@ class Snippet(models.Model):
         self.highlighted = highlight(self.code, lexer, formatter)
         return super().save(*args, **kwargs)
 
-    def delete(self):
-        pass
+    # def delete(self):
+    #     pass
 
-    def create(self):
-        pass
+    # def create(self):
+    #     pass
 
-    def update(self):
-        pass
+    # def update(self):
+    #     pass
 
     # and so on

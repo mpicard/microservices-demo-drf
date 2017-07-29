@@ -8,8 +8,8 @@ def validate_something(value):
     """
     Business logic: resuable validations
     """
-    if value == 'not me':
-        raise serializers.ValidationError("You can't do that!")
+    if 'not me' in value.lower():
+        raise serializers.ValidationError("You can't do that, man!")
     return value
 
 

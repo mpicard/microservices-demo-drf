@@ -11,7 +11,7 @@ class PytestTestRunner(object):
 
         It translates some of Django's test command option to pytest's.
         """
-        import pytest
+        import pytest  # noqa
 
         argv = []
         if self.verbosity == 0:
