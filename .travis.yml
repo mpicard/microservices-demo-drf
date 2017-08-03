@@ -5,8 +5,9 @@ language: python3
 services:
   - docker
 
-before_script:
-  - docker-compose run web flake8 .
-
-script:
-  - docker-compose run web pytest -v
+jobs:
+  include:
+    - stage: lint
+      script: docker-compose run web flake8
+    - stage: test
+      script: docker-compose run web pytest -v
