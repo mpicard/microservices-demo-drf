@@ -1,7 +1,5 @@
 import pytest
 
-from functools import reduce
-from rest_framework.test import APIRequestFactory
 from rest_framework.reverse import reverse
 
 
@@ -44,10 +42,9 @@ class TestIntegrations:
         id = new_snippet.id
         updated_snippet = {
             'title': 'Simple GET request',
-            'code': """
-                import requests
-                r = requests.get('api.github.com/users/')
-                print(r.json())"""
+            'code': """import requests
+                       r = requests.get('api.github.com/users/')
+                       print(r.json())"""
         }
         resp = client.put(f'/snippets/{id}/', updated_snippet)
 
@@ -55,16 +52,14 @@ class TestIntegrations:
         assert resp.json()['title'] == 'Simple GET request'
 
     def test_destroy(self, client, new_snippet):
-        id =  new_snippet.id
+        id = new_snippet.id
         resp = client.delete(reverse('snippet-detail', args=[id]))
 
         assert resp.status_code == 204
 
     def test_partial_update(self, client, new_snippet):
         id = new_snippet.id
-        partial_snippet = {
-            'title': 'New title'
-        }
+        partial_snippet = {'title': 'New title'}
         resp = client.patch(
             reverse('snippet-detail', args=[id]),
             partial_snippet,
@@ -74,22 +69,45 @@ class TestIntegrations:
         assert resp.status_code == 200
 
     def test_highlight(self, client, new_snippet):
-        resp = client.get(reverse('snippet-highlight', args=[new_snippet.id]), format='text/html')
+        resp = client.get(
+            reverse('snippet-highlight', args=[new_snippet.id]),
+            format='text/html')
+        renderer_cls_name = resp.accepted_renderer.__class__.__name__
 
         assert resp.status_code == 200
         assert resp.accepted_media_type == 'text/html'
-        assert resp.accepted_renderer.__class__.__name__ == 'StaticHTMLRenderer'
+        assert renderer_cls_name == 'StaticHTMLRenderer'
 
     def test_recent(self, client, new_snippet_set):
         resp = client.get(reverse('snippet-recent'))
 
         assert resp.status_code == 200
         assert resp.json()['count'] == new_snippet_set.count()
+
         results = resp.json()['results']
-        expected_results = sorted(results, key=lambda a: a['updated'], reverse=True)
+        expected_results = sorted(
+            results,
+            key=lambda a: a['updated'],
+            reverse=True)
+
         assert results == expected_results
 
     def test_recent_page_is_none(self, client, new_snippet_set):
         resp = client.get(reverse('snippet-recent'), limit=100, page=10)
 
         assert resp.status_code == 200
+
+    def test_create_not_authenticated(self, client):
+        client.logout()
+        new_snippet = {
+            'title': 'New Snippet',
+            'code': 'import python',
+            'language': 'python3',
+            'style': 'monokai',
+            'linenos': False
+        }
+        resp = client.post('/snippets/', new_snippet)
+
+        assert resp.status_code == 403
+        assert (resp.content ==
+                b'{"detail":"Authentication credentials were not provided."}')

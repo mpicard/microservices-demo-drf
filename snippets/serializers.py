@@ -1,5 +1,9 @@
-from rest_framework import serializers
+"""
+Serializers: serialize and validate data for responses and requests
+"""
 from django.contrib.auth.models import User
+
+from rest_framework import serializers
 
 from snippets.models import Snippet
 
@@ -15,7 +19,9 @@ def validate_something(value):
 
 class SnippetSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
-    code = serializers.CharField(validators=[validate_something])
+    code = serializers.CharField(
+        validators=[validate_something],
+        style={'base_template': 'textarea.html'})
     highlight = serializers.HyperlinkedIdentityField(
         view_name='snippet-highlight',
         read_only=True,

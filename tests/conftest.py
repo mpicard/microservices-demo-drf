@@ -1,5 +1,4 @@
 import pytest
-import faker
 
 from rest_framework.test import APIClient
 
@@ -24,7 +23,6 @@ def client(new_user):
 @pytest.mark.django_db
 @pytest.fixture(scope="function")
 def new_snippet(new_user):
-    # Makes new snippet for each test module(test_*.py)
     new_snippet = Snippet(
         title="New Snippet",
         code="import python",
@@ -37,14 +35,12 @@ def new_snippet(new_user):
 @pytest.mark.django_db
 @pytest.fixture(scope="function")
 def new_snippet_set(new_user):
-    fake = faker.Factory.create()
-
     new_snippet_set = []
     for i in range(10):
         new_snippet_set.append(Snippet(
-            title=fake.bs(),
-            code=fake.text(max_nb_chars=200),
-            linenos=fake.pybool(),
+            title='title',
+            code='some code',
+            linenos=True,
             language="python",
             style="monokai",
             owner=new_user
