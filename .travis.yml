@@ -12,6 +12,7 @@ jobs:
     - stage: test
       script: docker-compose run web pytest -v
     - stage: release
+      rvm: 2.3
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
