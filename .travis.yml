@@ -11,3 +11,10 @@ jobs:
       script: docker-compose run web flake8
     - stage: test
       script: docker-compose run web pytest -v
+    - stage: release
+      deploy:
+        provider: releases
+        api_key: $GITHUB_OAUTH_TOKEN
+        skip_cleanup: true
+        on:
+          tags: true
