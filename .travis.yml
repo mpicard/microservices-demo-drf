@@ -5,11 +5,8 @@ language: python3
 services:
   - docker
 
-install:
-  - "pip3 install flake8"
-
 before_script:
-  - "flake8 ."
+  - docker-compose run web flake8 .
 
 script:
-  docker-compose run web pytest -v
+  - docker-compose run web pytest -v

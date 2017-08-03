@@ -1,5 +1,6 @@
 import json
 import random
+
 from locust import HttpLocust, TaskSet, task
 
 
@@ -25,8 +26,7 @@ class UserBehavior(TaskSet):
     def list(self):
         self.client.get('/snippets/', auth=self.auth, headers=headers)
 
-    @task(1
-          0)
+    @task(10)
     def retrieve(self):
         id = random.randint(1, 10)
         self.client.get('/snippets/%s/' % id, auth=self.auth, headers=headers)
@@ -36,4 +36,4 @@ class WebsiteUser(HttpLocust):
     host = 'http://localhost:9000'
     task_set = UserBehavior
     min_wait = 5000
-    max_wait = 9000
+    max_wait = 10000
