@@ -6,10 +6,10 @@ services:
   - docker
 
 install:
-  - "pip install flake8"
+  - "pip3 install flake8"
 
 before_script:
   - "flake8 ."
 
 script:
-  docker-compose run web pytest -vvvv
+  docker-compose run web pytest -v
