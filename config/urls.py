@@ -13,7 +13,7 @@ router.register(r'snippets', views.SnippetViewSet)
 | Method |      URL       |      Name      |     Action     |
 |========|================|================|================|
 | GET    | /snippets/     | snippet-list   | list           |
-| POST   | /snippets/     | snippet-create | create         |
+| POST   | /snippets/     | snippet-list   | create         |
 | GET    | /snippets/{id} | snippet-detail | retrieve       |
 | PUT    | /snippets/{id} | snippet-detail | update         |
 | PATCH  | /snippets/{id} | snippet-detail | partial_update |

@@ -8,3 +8,4 @@ pytest-cov
 pytest-django
 pytest-watch
 flake8
+locustio
